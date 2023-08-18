@@ -19,24 +19,17 @@ class ColorAdjustmentApp extends StatefulWidget {
 }
 
 class _ColorAdjustmentAppState extends State<ColorAdjustmentApp> {
-  int redValue = 255; // Initial red value (255 for maximum)
-  Color backgroundColor = Colors.white; // Initial background color
+  int redValue = 255;
+  int greenValue = 255;
+  int blueValue = 255;
+  Color backgroundColor = Colors.white;
 
-  void increaseRed() {
+  void adjustColor(int deltaR, int deltaG, int deltaB) {
     setState(() {
-      if (redValue < 255) {
-        redValue += 10;
-        backgroundColor = Color.fromARGB(255, redValue, 0, 0);
-      }
-    });
-  }
-
-  void decreaseRed() {
-    setState(() {
-      if (redValue > 0) {
-        redValue -= 10;
-        backgroundColor = Color.fromARGB(255, redValue, 0, 0);
-      }
+      redValue = (redValue + deltaR).clamp(0, 255);
+      greenValue = (greenValue + deltaG).clamp(0, 255);
+      blueValue = (blueValue + deltaB).clamp(0, 255);
+      backgroundColor = Color.fromARGB(255, redValue, greenValue, blueValue);
     });
   }
 
@@ -52,16 +45,53 @@ class _ColorAdjustmentAppState extends State<ColorAdjustmentApp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: increaseRed,
-                child: Text('+'),
-                style: ElevatedButton.styleFrom(primary: Colors.red),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => adjustColor(10, 0, 0),
+                    child: Text('+R'),
+                    style: ElevatedButton.styleFrom(primary: Colors.red),
+                  ),
+                  SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () => adjustColor(-10, 0, 0),
+                    child: Text('-R'),
+                    style: ElevatedButton.styleFrom(primary: Colors.red),
+                  ),
+                ],
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: decreaseRed,
-                child: Text('-'),
-                style: ElevatedButton.styleFrom(primary: Colors.red),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => adjustColor(0, 10, 0),
+                    child: Text('+G'),
+                    style: ElevatedButton.styleFrom(primary: Colors.green),
+                  ),
+                  SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () => adjustColor(0, -10, 0),
+                    child: Text('-G'),
+                    style: ElevatedButton.styleFrom(primary: Colors.green),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => adjustColor(0, 0, 10),
+                    child: Text('+B'),
+                    style: ElevatedButton.styleFrom(primary: Colors.blue),
+                  ),
+                  SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () => adjustColor(0, 0, -10),
+                    child: Text('-B'),
+                    style: ElevatedButton.styleFrom(primary: Colors.blue),
+                  ),
+                ],
               ),
             ],
           ),
