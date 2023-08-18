@@ -46,9 +46,6 @@ class _ColorAdjustmentAppState extends State<ColorAdjustmentApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Color Adjustment App'),
-      ),
       body: Container(
         color: backgroundColor,
         child: Center(
