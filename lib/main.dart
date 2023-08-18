@@ -23,26 +23,36 @@ class _ColorAdjustmentAppState extends State<ColorAdjustmentApp> {
   int greenValue = 0;
   int blueValue = 0;
   Color backgroundColor = Colors.white;
+  Color fontColor = Colors.black;
 
   void adjustRed(int delta) {
     setState(() {
       redValue = (redValue + delta).clamp(0, 255);
-      backgroundColor = Color.fromARGB(255, redValue, greenValue, blueValue);
+      updateBackgroundAndFontColor();
     });
   }
 
   void adjustGreen(int delta) {
     setState(() {
       greenValue = (greenValue + delta).clamp(0, 255);
-      backgroundColor = Color.fromARGB(255, redValue, greenValue, blueValue);
+      updateBackgroundAndFontColor();
     });
   }
 
   void adjustBlue(int delta) {
     setState(() {
       blueValue = (blueValue + delta).clamp(0, 255);
-      backgroundColor = Color.fromARGB(255, redValue, greenValue, blueValue);
+      updateBackgroundAndFontColor();
     });
+  }
+
+  void updateBackgroundAndFontColor() {
+    backgroundColor = Color.fromARGB(255, redValue, greenValue, blueValue);
+
+    // Determine the appropriate font color based on background brightness
+    double brightness =
+        (redValue * 0.299 + greenValue * 0.587 + blueValue * 0.114) / 255;
+    fontColor = brightness > 0.5 ? Colors.black : Colors.white;
   }
 
   @override
@@ -130,7 +140,10 @@ class _ColorAdjustmentAppState extends State<ColorAdjustmentApp> {
                 ],
               ),
               SizedBox(height: 20),
-              Text('R: $redValue, G: $greenValue, B: $blueValue'),
+              Text(
+                'R: $redValue, G: $greenValue, B: $blueValue',
+                style: TextStyle(color: fontColor),
+              ),
             ],
           ),
         ),
